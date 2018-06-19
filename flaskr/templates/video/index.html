@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Video{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('upload.upload_file') }}">upload</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for video in videos %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ video['filename'] }}</h1>
+          <div class="about">by {{ video['username'] }} on {{ video['created'].strftime('%Y-%m-%d') }}</div>
+        </div>
+        {% if g.user['id'] == video['author_id'] %}
+          <a class="action" href="{{ url_for('video.delete', id=video['id']) }}">Delete</a>
+        {% endif %}
+      </header>
+      <p class="body"> <a href="{{ url_for('player.index', filename=video['filename']) }}">
+          <img src="../{{ video['posterloc'] }}" height="200" width="200"> </a> </p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

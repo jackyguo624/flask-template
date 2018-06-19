@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 
+UPLOAD_FOLDER = 'static/upload_dir'
 
 def create_app(test_config=None):
     # create and configure the app
@@ -37,10 +38,17 @@ def create_app(test_config=None):
 
     from . import blog
     app.register_blueprint(blog.bp)
+    #app.add_url_rule('/', endpoint='index')
+
+    from . import video
+    app.register_blueprint(video.bp)
     app.add_url_rule('/', endpoint='index')
 
     from . import upload
     app.register_blueprint(upload.bp)
+
+    from . import player
+    app.register_blueprint(player.bp)
 
 
     return app
